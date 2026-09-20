@@ -1,0 +1,86 @@
+<%- include('../partials/header') %>
+
+<h2 class="mb-4"><i class="bi bi-journal-text me-2"></i>Manage Reservations</h2>
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form method="GET" class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" class="form-control" value="<%= date || '' %>">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Session</label>
+        <select name="session" class="form-select">
+          <option value="">All</option>
+          <option value="breakfast" <%= session === 'breakfast' ? 'selected' : '' %>>Breakfast</option>
+          <option value="lunch" <%= session === 'lunch' ? 'selected' : '' %>>Lunch</option>
+          <option value="dinner" <%= session === 'dinner' ? 'selected' : '' %>>Dinner</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+          <option value="">All</option>
+          <option value="confirmed" <%= status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+          <option value="cancelled" <%= status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+          <option value="completed" <%= status === 'completed' ? 'selected' : '' %>>Completed</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Student</th>
+            <th>Student ID</th>
+            <th>Meal</th>
+            <th>Date</th>
+            <th>Session</th>
+            <th>Guests</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (reservations.length === 0) { %>
+            <tr><td colspan="9" class="text-center text-muted py-4">No reservations found</td></tr>
+          <% } %>
+          <% reservations.forEach(function(r) { %>
+            <tr>
+              <td><%= r.student ? r.student.name : 'N/A' %></td>
+              <td><%= r.student ? r.student.studentId : '—' %></td>
+              <td><%= r.meal ? r.meal.name : 'N/A' %></td>
+              <td><%= new Date(r.date).toLocaleDateString() %></td>
+              <td><span class="badge session-<%= r.session %>"><%= r.session %></span></td>
+              <td><%= r.guestCount %></td>
+              <td><%= r.totalMeals %></td>
+              <td><span class="badge bg-<%= r.status === 'confirmed' ? 'success' : r.status === 'cancelled' ? 'danger' : 'secondary' %>"><%= r.status %></span></td>
+              <td>
+                <form action="/admin/reservations/<%= r._id %>/status" method="POST" class="d-flex gap-1">
+                  <select name="status" class="form-select form-select-sm">
+                    <option value="confirmed" <%= r.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                    <option value="cancelled" <%= r.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                    <option value="completed" <%= r.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

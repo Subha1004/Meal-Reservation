@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<div class="auth-wrap auth-admin">
+  <div class="premium-card row g-0">
+    <div class="col-lg-5 premium-left">
+      <div>
+        <div class="small text-uppercase fw-bold mb-3" style="letter-spacing:.14em;color:#9a7945">Management Portal</div>
+        <h1>Admin Registration</h1>
+        <p>Manage meals, reservations, attendance and reports from one beautifully organized workspace.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <span class="badge rounded-pill" style="background:#e8eee4;color:#31584c;padding:.65rem .8rem"><i class="bi bi-egg-fried me-1"></i> Meals</span>
+          <span class="badge rounded-pill" style="background:#f4e6cf;color:#91682f;padding:.65rem .8rem"><i class="bi bi-bar-chart me-1"></i> Reports</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7 premium-form">
+      <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-person-badge" style="font-size:1.5rem;color:#b67b3c"></i><span class="small fw-bold text-uppercase" style="letter-spacing:.12em;color:#8a7a63">Create admin account</span></div>
+      <h2 class="premium-title mb-2">Welcome to the Admin Team</h2>
+      <p class="text-muted mb-4">Enter your details to create your management account.</p>
+      <form action="/admin/register" method="POST">
+        <div class="row g-3">
+          <div class="col-md-6"><label>Full Name</label><input type="text" name="name" class="form-control" placeholder="Enter full name" required></div>
+          <div class="col-md-6"><label>Email</label><input type="email" name="email" class="form-control" placeholder="admin@example.com" required></div>
+          <div class="col-md-6"><label>Phone</label><input type="tel" name="phone" class="form-control" placeholder="Enter phone number"></div>
+          <div class="col-md-6"><label>Role</label><input type="text" class="form-control" value="Administrator" disabled></div>
+          <div class="col-12"><label>Password</label><input type="password" name="password" class="form-control" placeholder="Create a secure password" required></div>
+        </div>
+        <button class="btn btn-premium w-100 mt-4"><i class="bi bi-person-check me-2"></i>Register as Admin</button>
+      </form>
+      <div class="auth-links text-center mt-4">Already have an account? <a href="/login">Login here</a><br><span class="d-inline-block mt-2">Student? <a href="/register">Register as student</a></span></div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,90 @@
+<%- include('../partials/header') %>
+
+<h2 class="mb-4"><i class="bi bi-person-check me-2"></i>Record Attendance</h2>
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form method="GET" class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" class="form-control" value="<%= date %>" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Session</label>
+        <select name="session" class="form-select">
+          <option value="">All Sessions</option>
+          <option value="breakfast" <%= session === 'breakfast' ? 'selected' : '' %>>Breakfast</option>
+          <option value="lunch" <%= session === 'lunch' ? 'selected' : '' %>>Lunch</option>
+          <option value="dinner" <%= session === 'dinner' ? 'selected' : '' %>>Dinner</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary w-100">Load Reservations</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-0">
+    <% if (reservations.length === 0) { %>
+      <p class="text-muted text-center py-4 mb-0">No confirmed reservations for selected date/session.</p>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Student</th>
+              <th>Meal</th>
+              <th>Session</th>
+              <th>Reserved</th>
+              <th>Guests</th>
+              <th>Attendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reservations.forEach(function(r) {
+              const att = attendanceMap[r._id.toString()];
+            %>
+              <tr>
+                <td><%= r.student ? r.student.name : 'N/A' %></td>
+                <td><%= r.meal ? r.meal.name : 'N/A' %></td>
+                <td><span class="badge session-<%= r.session %>"><%= r.session %></span></td>
+                <td><%= r.totalMeals %> meal(s)</td>
+                <td><%= r.guestCount %></td>
+                <td>
+                  <form action="/admin/attendance/<%= r._id %>" method="POST" class="row g-2 align-items-center">
+                    <div class="col-auto">
+                      <div class="form-check">
+                        <input type="checkbox" name="attended" class="form-check-input" id="att<%= r._id %>" <%= att && att.attended ? 'checked' : '' %>>
+                        <label class="form-check-label" for="att<%= r._id %>">Attended</label>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <input type="number" name="guestAttended" class="form-control form-control-sm" style="width:70px" min="0" max="<%= r.guestCount %>" value="<%= att ? att.guestAttended : 0 %>" placeholder="Guests">
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Remarks" value="<%= att ? att.remarks || '' : '' %>">
+                    </div>
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                    </div>
+                    <% if (att) { %>
+                      <div class="col-12">
+                        <small class="text-muted">
+                          <% if (att.isNoShow) { %><span class="text-danger">No-show recorded</span><% } else { %><span class="text-success">Present</span><% } %>
+                        </small>
+                      </div>
+                    <% } %>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

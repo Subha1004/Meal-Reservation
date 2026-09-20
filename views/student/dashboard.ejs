@@ -1,0 +1,107 @@
+<%- include('../partials/header') %>
+
+<div class="dashboard-hero mb-4">
+  <div class="row align-items-center g-3">
+    <div class="col-lg-8">
+      <div class="small text-uppercase fw-bold opacity-75 mb-2">Welcome back</div>
+      <h2 class="mb-2">Good <%= new Date().getHours() < 12 ? 'Morning' : (new Date().getHours() < 17 ? 'Afternoon' : 'Evening') %>, <%= user.name %>! 👋</h2>
+      <p>Plan your meals, reserve your seat, and help the hostel kitchen prepare the right quantity.</p>
+    </div>
+    <div class="col-lg-4 text-lg-end">
+      <a href="/student/meals" class="btn btn-light px-4"><i class="bi bi-egg-fried me-2"></i>Reserve a Meal</a>
+    </div>
+  </div>
+</div>
+
+<% if (mealReminder) { %>
+  <div class="reminder-card p-3 p-md-4 mb-4 d-flex align-items-center gap-3">
+    <div class="reminder-icon"><i class="bi bi-bell-fill"></i></div>
+    <div class="flex-grow-1">
+      <div class="fw-bold">Meal Reminder</div>
+      <div class="text-muted small"><%= mealReminder.message %></div>
+      <div class="small mt-1"><strong><%= mealReminder.mealName %></strong> · <%= mealReminder.sessionLabel %> · <%= mealReminder.hours %></div>
+    </div>
+    <a href="/student/meals" class="btn btn-primary btn-sm">Reserve</a>
+  </div>
+<% } else { %>
+  <div class="alert alert-light modern-alert border mb-4"><i class="bi bi-bell me-2"></i>No upcoming meal reservations. <a href="/student/meals" class="fw-semibold">Book a meal</a>.</div>
+<% } %>
+
+<% if (emailReminderNotice) { %>
+  <div class="alert alert-info modern-alert mb-4"><i class="bi bi-envelope-check-fill me-2"></i>Meal reminder email was sent to your registered email address.</div>
+<% } %>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="stat-card stat-orange h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+        <div><div class="small opacity-75">Total Bookings</div><h2 class="mb-0"><%= totalReservations %></h2></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card stat-green h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+        <div><div class="small opacity-75">Upcoming</div><h2 class="mb-0"><%= upcomingCount %></h2></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card stat-blue h-100">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="stat-icon"><i class="bi bi-broadcast-pin"></i></div>
+        <div>
+          <div class="small opacity-75"><%= currentSessionMeta ? 'Current Session' : 'Next Session' %></div>
+          <div class="fw-bold fs-5"><%= currentSessionMeta ? currentSessionMeta.label : (nextSession ? nextSession.session : 'No session') %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div><h4 class="mb-1 fw-bold">Today's Meal Options</h4><div class="text-muted small">Choose from the available hostel meals.</div></div>
+  <a href="/student/meals" class="btn btn-outline-primary btn-sm">View All</a>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <a href="/student/meals" class="quick-action h-100"><div class="quick-icon"><i class="bi bi-sunrise"></i></div><div><strong>Breakfast</strong><div class="small text-muted">Start your day with a healthy meal.</div></div><i class="bi bi-chevron-right ms-auto"></i></a>
+  </div>
+  <div class="col-md-4">
+    <a href="/student/meals" class="quick-action h-100"><div class="quick-icon"><i class="bi bi-brightness-high"></i></div><div><strong>Lunch</strong><div class="small text-muted">Reserve before the booking deadline.</div></div><i class="bi bi-chevron-right ms-auto"></i></a>
+  </div>
+  <div class="col-md-4">
+    <a href="/student/meals" class="quick-action h-100"><div class="quick-icon"><i class="bi bi-moon-stars"></i></div><div><strong>Dinner</strong><div class="small text-muted">Finish the day with your preferred meal.</div></div><i class="bi bi-chevron-right ms-auto"></i></a>
+  </div>
+</div>
+
+<div class="modern-card bg-white">
+  <div class="card-header bg-white p-3 p-md-4 d-flex justify-content-between align-items-center">
+    <div><h5 class="mb-1 fw-bold">Upcoming Reservations</h5><div class="small text-muted">Your next confirmed meal bookings.</div></div>
+    <a href="/student/reservations" class="btn btn-sm btn-outline-primary">View All</a>
+  </div>
+  <div class="card-body p-0">
+    <% if (reservations.length === 0) { %>
+      <div class="empty-state"><div class="empty-icon"><i class="bi bi-calendar-x"></i></div><div>No upcoming reservations.</div><a href="/student/meals" class="btn btn-primary btn-sm mt-3">Book a Meal</a></div>
+    <% } else { %>
+      <div class="table-responsive"><table class="table table-hover mb-0">
+        <thead><tr><th class="ps-4">Meal</th><th>Date</th><th>Session</th><th>Guests</th><th>Status</th></tr></thead>
+        <tbody>
+        <% reservations.forEach(function(r) { %>
+          <tr>
+            <td class="ps-4 fw-semibold"><%= r.meal ? r.meal.name : 'N/A' %></td>
+            <td><%= new Date(r.date).toLocaleDateString() %></td>
+            <td><span class="badge session-<%= r.session %>"><%= r.session %></span></td>
+            <td><%= r.guestCount %></td>
+            <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill"><i class="bi bi-check2-circle me-1"></i><%= r.status %></span></td>
+          </tr>
+        <% }); %>
+        </tbody>
+      </table></div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

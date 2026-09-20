@@ -1,0 +1,88 @@
+<%- include('../partials/header') %>
+
+<div class="report-hero mb-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <div class="small text-uppercase fw-bold opacity-75 mb-2">Management analytics</div>
+      <h2 class="mb-2">Meal Reservation Report</h2>
+      <p class="mb-0">Generate a daily summary for kitchen planning, reservations and attendance.</p>
+    </div>
+    <div class="text-end"><div class="small opacity-75">Report Date</div><div class="fs-5 fw-bold"><%= date %></div></div>
+  </div>
+</div>
+
+<div class="report-filter mb-4 no-print">
+  <form method="GET" class="row g-3 align-items-end">
+    <div class="col-md-5">
+      <label class="form-label fw-semibold">Date</label>
+      <input type="date" name="date" class="form-control" value="<%= date %>" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label fw-semibold">Meal Session</label>
+      <select name="session" class="form-select">
+        <option value="">All Sessions</option>
+        <option value="breakfast" <%= session === 'breakfast' ? 'selected' : '' %>>Breakfast</option>
+        <option value="lunch" <%= session === 'lunch' ? 'selected' : '' %>>Lunch</option>
+        <option value="dinner" <%= session === 'dinner' ? 'selected' : '' %>>Dinner</option>
+      </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+      <button type="submit" class="btn btn-primary flex-grow-1"><i class="bi bi-bar-chart-line me-1"></i>Generate Report</button>
+      <button type="button" class="btn btn-outline-secondary" onclick="window.print()" title="Print report"><i class="bi bi-printer"></i></button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3"><div class="report-stat"><div class="icon"><i class="bi bi-calendar-check"></i></div><div class="small text-muted mt-3">Reservations</div><h3><%= totalReserved %></h3><div class="small text-muted">Confirmed / completed</div></div></div>
+  <div class="col-sm-6 col-xl-3"><div class="report-stat"><div class="icon"><i class="bi bi-people"></i></div><div class="small text-muted mt-3">Guest Meals</div><h3><%= totalGuests %></h3><div class="small text-muted">Parent / guest count</div></div></div>
+  <div class="col-sm-6 col-xl-3"><div class="report-stat"><div class="icon"><i class="bi bi-egg-fried"></i></div><div class="small text-muted mt-3">Meals Required</div><h3><%= totalMealsNeeded %></h3><div class="small text-muted">Student + guest meals</div></div></div>
+  <div class="col-sm-6 col-xl-3"><div class="report-stat"><div class="icon"><i class="bi bi-person-check"></i></div><div class="small text-muted mt-3">Attendance</div><h3><%= attendedCount %></h3><div class="small text-muted"><%= noShowCount %> no-show</div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-7">
+    <div class="report-table h-100">
+      <div class="p-3 p-md-4 border-bottom"><h5 class="mb-1 fw-bold">Session-wise Meal Requirement</h5><div class="small text-muted">Useful for kitchen preparation.</div></div>
+      <div class="table-responsive"><table class="table align-middle">
+        <thead><tr><th class="ps-4">Session</th><th>Students</th><th>Guests</th><th>Total Meals</th></tr></thead>
+        <tbody>
+        <% ['breakfast','lunch','dinner'].forEach(function(sess) { %>
+          <tr><td class="ps-4"><span class="badge session-<%= sess %>"><%= sess %></span></td><td><%= sessionWise[sess].student %></td><td><%= sessionWise[sess].guest %></td><td class="fw-bold"><%= sessionWise[sess].total %></td></tr>
+        <% }); %>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="report-table h-100">
+      <div class="p-3 p-md-4 border-bottom"><h5 class="mb-1 fw-bold">Meal Category</h5><div class="small text-muted">Total meals by food preference.</div></div>
+      <div class="p-3 p-md-4">
+        <% const categories = [['vegetarian','Vegetarian','category-vegetarian','bi-leaf'],['non-vegetarian','Non-Vegetarian','category-non-vegetarian','bi-egg-fried'],['vegan','Vegan','category-vegan','bi-flower1']]; %>
+        <% categories.forEach(function(c) { %>
+          <div class="d-flex align-items-center justify-content-between py-2"><div class="d-flex align-items-center gap-2"><span class="category-badge <%= c[2] %>"><i class="bi <%= c[3] %>"></i></span><span class="fw-semibold"><%= c[1] %></span></div><strong><%= categoryWise[c[0]] %></strong></div>
+        <% }); %>
+        <div class="mt-3 pt-3 border-top small text-muted"><i class="bi bi-info-circle me-1"></i>Counts are based on reservations and their guest meals.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="report-table mb-4">
+  <div class="p-3 p-md-4 border-bottom d-flex justify-content-between align-items-center"><div><h5 class="mb-1 fw-bold">Attendance Summary</h5><div class="small text-muted">Meal collection status recorded by the admin.</div></div><div class="d-flex gap-2"><span class="badge bg-success-subtle text-success-emphasis">Present: <%= attendedCount %></span><span class="badge bg-danger-subtle text-danger-emphasis">No-show: <%= noShowCount %></span></div></div>
+  <div class="p-3 p-md-4"><div class="row g-3"><div class="col-md-4"><div class="p-3 rounded-4 bg-success-subtle"><div class="small text-muted">Students Present</div><div class="fs-3 fw-bold text-success-emphasis"><%= attendedCount %></div></div></div><div class="col-md-4"><div class="p-3 rounded-4 bg-danger-subtle"><div class="small text-muted">Students No-show</div><div class="fs-3 fw-bold text-danger-emphasis"><%= noShowCount %></div></div></div><div class="col-md-4"><div class="p-3 rounded-4 bg-info-subtle"><div class="small text-muted">Guests Attended</div><div class="fs-3 fw-bold"><%= guestAttendedCount %></div></div></div></div></div>
+</div>
+
+<div class="report-table">
+  <div class="p-3 p-md-4 border-bottom"><h5 class="mb-1 fw-bold">Reservation Details</h5><div class="small text-muted">Detailed records included in this generated report.</div></div>
+  <div class="table-responsive"><table class="table table-hover align-middle">
+    <thead><tr><th class="ps-4">Student</th><th>Meal</th><th>Session</th><th>Guests</th><th>Total</th><th>Status</th></tr></thead>
+    <tbody>
+    <% if (reservations.length === 0) { %><tr><td colspan="6"><div class="empty-state">No reservations for the selected date/session.</div></td></tr><% } else { %>
+      <% reservations.forEach(function(r) { %><tr><td class="ps-4 fw-semibold"><%= r.student ? r.student.name : 'N/A' %></td><td><%= r.meal ? r.meal.name : 'N/A' %></td><td><span class="badge session-<%= r.session %>"><%= r.session %></span></td><td><%= r.guestCount || 0 %></td><td class="fw-bold"><%= r.totalMeals || (1 + (r.guestCount || 0)) %></td><td><span class="badge rounded-pill <%= r.status === 'completed' ? 'bg-success-subtle text-success-emphasis' : 'bg-primary-subtle text-primary-emphasis' %>"><%= r.status %></span></td></tr><% }); %>
+    <% } %>
+    </tbody>
+  </table></div>
+</div>
+
+<%- include('../partials/footer') %>

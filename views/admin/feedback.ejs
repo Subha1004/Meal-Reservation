@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<h2 class="mb-4"><i class="bi bi-chat-dots me-2"></i>Student Feedback</h2>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm text-center bg-warning">
+      <div class="card-body">
+        <h6>Average Rating</h6>
+        <h2><%= avgRating %> / 5</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm text-center">
+      <div class="card-body">
+        <h6 class="text-muted">Total Feedback</h6>
+        <h2><%= feedbackList.length %></h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <% if (feedbackList.length === 0) { %>
+      <p class="text-muted mb-0">No feedback submitted yet.</p>
+    <% } else { %>
+      <% feedbackList.forEach(function(f) { %>
+        <div class="border-bottom pb-3 mb-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <strong><%= f.student ? f.student.name : 'Unknown' %></strong>
+              <span class="text-muted ms-2"><%= f.student ? f.student.studentId : '' %></span>
+            </div>
+            <span class="text-warning fs-5"><%= '★'.repeat(f.rating) %><%= '☆'.repeat(5 - f.rating) %></span>
+          </div>
+          <div class="mt-1">
+            <span class="badge bg-light text-dark"><%= f.category.replace('_', ' ') %></span>
+            <% if (f.meal) { %><span class="badge bg-primary"><%= f.meal.name %></span><% } %>
+            <small class="text-muted ms-2"><%= new Date(f.createdAt).toLocaleString() %></small>
+          </div>
+          <p class="mt-2 mb-0"><%= f.comment %></p>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

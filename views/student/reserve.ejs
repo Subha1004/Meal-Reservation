@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white">
+        <h4 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>Make Reservation</h4>
+      </div>
+      <div class="card-body p-4">
+        <div class="alert alert-light border mb-4">
+          <h5 class="mb-1"><%= meal.name %></h5>
+          <p class="mb-1 text-muted"><%= meal.description %></p>
+          <div>
+            <span class="badge session-<%= meal.session %> me-2"><%= meal.session %></span>
+            <span class="badge bg-secondary"><%= meal.category %></span>
+          </div>
+        </div>
+
+        <form action="/student/reserve/<%= meal._id %>" method="POST">
+          <div class="mb-3">
+            <label class="form-label">Reservation Date</label>
+            <input type="date" name="date" class="form-control" required min="<%= minDate %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Parent / Guest Meal Count</label>
+            <input type="number" name="guestCount" class="form-control" min="0" max="10" value="0">
+            <div class="form-text">Add extra meals when parents or guests visit the institution.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Notes (optional)</label>
+            <textarea name="notes" class="form-control" rows="2" placeholder="Any special requests..."></textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+            <a href="/student/meals" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

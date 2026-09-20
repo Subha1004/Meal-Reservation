@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2><i class="bi bi-egg-fried me-2"></i>Available Meals</h2>
+</div>
+
+<div id="current-meal-banner" class="card border-0 shadow-sm mb-4 current-meal-banner">
+  <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <h4 id="current-meal-title" class="mb-1">Detecting current meal...</h4>
+      <p id="current-meal-hours" class="mb-0 text-muted">Session is chosen automatically from live time.</p>
+    </div>
+    <div class="text-md-end">
+      <div class="small text-muted">Live time</div>
+      <div id="live-meal-clock" class="fs-4 fw-semibold font-monospace">--:--:--</div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form method="GET" class="row g-3 align-items-end">
+      <div class="col-md-8">
+        <label class="form-label">Category</label>
+        <select name="category" class="form-select">
+          <option value="">All Categories</option>
+          <option value="vegetarian" <%= category === 'vegetarian' ? 'selected' : '' %>>Vegetarian</option>
+          <option value="non-vegetarian" <%= category === 'non-vegetarian' ? 'selected' : '' %>>Non-Vegetarian</option>
+          <option value="vegan" <%= category === 'vegan' ? 'selected' : '' %>>Vegan</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="current-meal-empty" class="alert alert-info d-none"></div>
+<div id="current-meal-no-items" class="alert alert-info d-none"></div>
+
+<% if (meals.length === 0) { %>
+  <div class="alert alert-info">No meals available for the selected filters.</div>
+<% } else { %>
+  <div id="current-meal-grid" class="row g-4 meal-grid-pending">
+    <% meals.forEach(function(meal) { %>
+      <div class="col-md-4" data-meal-session="<%= meal.session %>">
+        <div class="card meal-card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0"><%= meal.name %></h5>
+              <span class="badge session-<%= meal.session %>"><%= meal.session %></span>
+            </div>
+            <p class="text-muted small"><%= meal.description || 'Delicious meal option' %></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge bg-secondary"><%= meal.category %></span>
+            </div>
+          </div>
+          <div class="card-footer bg-white border-0 pb-3">
+            <a href="/student/reserve/<%= meal._id %>" class="btn btn-primary w-100">
+              <i class="bi bi-calendar-plus me-1"></i>Reserve
+            </a>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>
