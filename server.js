@@ -59,7 +59,9 @@ connectDB()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
-      startMealReminderScheduler();
+      if (!process.env.VERCEL) {
+  startMealReminderScheduler();
+}
     });
   })
   .catch(() => {
