@@ -62,7 +62,7 @@ app.use('/student', studentRoutes);
 app.use('/admin', adminRoutes);
 
 app.use((req, res) => {
-  res.status(404).render('404', { title: 'Page Not Found' });
+  res.status(500).send(`Database connection failed: ${error.message}`);
 });
 
 module.exports = app;
