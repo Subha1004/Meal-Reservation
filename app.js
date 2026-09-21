@@ -22,6 +22,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection error:', error.message);
+    res.status(500).send('Database connection failed.');
+  }
+});
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'meal_reservation_secret',
