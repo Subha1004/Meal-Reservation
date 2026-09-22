@@ -106,3 +106,13 @@ meal-reservation/
 ## License
 
 MIT
+
+
+## Email notifications
+
+- Reservation confirmation email is sent after a successful student reservation.
+- Reminder email is sent during the final 30 minutes before the reservation booking deadline, only when the student has not already reserved that meal.
+- Duplicate reminders are prevented by `MealReminderLog`.
+- Configure `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM` and `REMINDER_LEAD_MINUTES`.
+- For scheduled production reminders, set `CRON_SECRET` in both Vercel and GitHub repository Actions secrets.
+- The included GitHub Actions workflow triggers the reminder endpoint every 5 minutes. Vercel Cron is also configured for deployments/plans that support minute-level schedules.
