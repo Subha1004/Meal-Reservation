@@ -37,6 +37,39 @@
   <div class="col-lg-8">
     <div class="modern-card bg-white h-100">
       <div class="card-header bg-white p-3 p-md-4 d-flex justify-content-between align-items-center">
+        <div><h5 class="mb-1 fw-bold">Meal Reservations</h5><div class="small text-muted">Reservations across the last 7 days.</div></div>
+        <a href="/admin/reports" class="btn btn-sm btn-outline-primary">Reports</a>
+      </div>
+      <div class="card-body p-3 p-md-4">
+        <div class="bar-chart" aria-label="Seven day reservation chart">
+          <% const maxChart = Math.max.apply(null, reservationChart.map(function(item){ return item.count; }).concat([1])); %>
+          <% reservationChart.forEach(function(item) { const height = item.count ? Math.max(8, Math.round((item.count / maxChart) * 100)) : 4; %>
+            <div class="bar-column">
+              <div class="bar-value"><%= item.count %></div>
+              <div class="bar-track"><div class="bar-fill" style="height:<%= height %>%"></div></div>
+              <div class="bar-label"><%= item.label %></div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="modern-card bg-white h-100">
+      <div class="card-header bg-white p-3 p-md-4"><h5 class="mb-1 fw-bold">Attendance Snapshot</h5><div class="small text-muted">Today's recorded attendance.</div></div>
+      <div class="card-body d-flex align-items-center justify-content-center">
+        <div class="attendance-ring" style="--attendance:<%= attendanceRate %>%">
+          <div><strong><%= attendanceRate %>%</strong><span>Attendance</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="modern-card bg-white h-100">
+      <div class="card-header bg-white p-3 p-md-4 d-flex justify-content-between align-items-center">
         <div><h5 class="mb-1 fw-bold">Today's Meal Flow</h5><div class="small text-muted">See where today's kitchen demand is concentrated.</div></div>
         <span class="dashboard-live-badge"><span></span> Live today</span>
       </div>

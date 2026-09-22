@@ -1,51 +1,129 @@
 <%- include('partials/header') %>
 
-<section class="hero-section mb-5">
-  <div class="hero-icon"><i class="bi bi-egg-fried"></i></div>
-  <div class="text-center">
-    <div class="text-uppercase small fw-bold mb-2" style="letter-spacing:.16em;color:#9a7945">Hostel Dining Made Simple</div>
-    <h1>Good Food.<br>Better Learning.</h1>
-    <p class="lead mx-auto">Reserve your meals, manage your dining schedule, and help the kitchen prepare the right quantity of fresh food — all in one elegant place.</p>
-    <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-      <a href="/register" class="btn btn-primary btn-lg"><i class="bi bi-person-plus me-2"></i>Student Register</a>
-      <a href="/admin/register" class="btn btn-outline-primary btn-lg"><i class="bi bi-shield-check me-2"></i>Admin Register</a>
-      <a href="/login" class="btn btn-outline-secondary btn-lg"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a>
+<section class="landing-hero">
+  <div class="landing-overlay"></div>
+  <div class="container landing-inner">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <div class="hero-eyebrow">GOOD FOOD <span>•</span> BETTER LEARNING</div>
+        <h1>Meal Reservation<br><em>for a Healthier Campus</em></h1>
+        <p class="hero-copy">Simplify meal booking for students. Reserve meals, add guest counts, and help the kitchen prepare the right quantity of fresh food.</p>
+
+        <div class="hero-actions">
+          <a href="/register" class="btn landing-btn-primary"><i class="bi bi-calendar2-check me-2"></i>Reserve Meal <span>→</span></a>
+          <a href="/login" class="btn landing-btn-ghost"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a>
+        </div>
+
+        <div class="hero-feature-row">
+          <div><i class="bi bi-calendar2-check"></i><span>Easy<br>Reservations</span></div>
+          <div><i class="bi bi-shield-check"></i><span>Safe &<br>Hygienic</span></div>
+          <div><i class="bi bi-clock-history"></i><span>Real-time<br>Updates</span></div>
+          <div><i class="bi bi-leaf"></i><span>Healthy &<br>Nutritious</span></div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="landing-food-card">
+          <div class="food-card-image">
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85" alt="Healthy campus meal">
+            <span class="food-card-badge"><i class="bi bi-stars me-1"></i>Fresh & Healthy</span>
+          </div>
+          <div class="food-card-body">
+            <div class="script-note">Healthy Food<br><strong>Happy You</strong> ♡</div>
+            <p>Book your meal before the reservation deadline and let the kitchen prepare the right quantity.</p>
+            <a href="/register" class="food-card-link">Get Started <span>→</span></a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="row g-4 mb-5">
-  <div class="col-md-4">
-    <div class="card h-100 feature-card border-0">
-      <div class="card-body text-center p-4 p-lg-5">
-        <div class="feature-icon"><i class="bi bi-calendar2-check"></i></div>
-        <h5>Easy Reservations</h5>
-        <p class="text-muted mb-0">Select a meal, date and session in a few clicks. Add guest meals whenever you need them.</p>
-      </div>
+<section class="landing-features">
+  <div class="container">
+    <div class="section-heading text-center">
+      <span>WHY MEAL RESERVATION?</span>
+      <h2>Simple booking. Better planning.</h2>
+      <p>Everything students and hostel administrators need in one place.</p>
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card h-100 feature-card border-0">
-      <div class="card-body text-center p-4 p-lg-5">
-        <div class="feature-icon"><i class="bi bi-clipboard2-data"></i></div>
-        <h5>Kitchen Planning</h5>
-        <p class="text-muted mb-0">Live reservation counts help the kitchen team prepare fresh food with less waste.</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card h-100 feature-card border-0">
-      <div class="card-body text-center p-4 p-lg-5">
-        <div class="feature-icon"><i class="bi bi-chat-heart"></i></div>
-        <h5>Feedback & Reports</h5>
-        <p class="text-muted mb-0">Track attendance, review feedback and understand meal demand from one workspace.</p>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="text-center py-3 mb-3">
-  <span class="badge rounded-pill" style="background:#e6efe8;color:#2f6b5a;padding:.65rem 1rem"><i class="bi bi-leaf me-1"></i> Fresh meals · Healthy you · Bright future</span>
-</div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="landing-feature-card">
+          <div class="landing-feature-icon mint"><i class="bi bi-calendar2-check"></i></div>
+          <h5>Easy Reservation</h5>
+          <p>Book your meals in just a few clicks, anytime you need them.</p>
+          <span>01</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="landing-feature-card">
+          <div class="landing-feature-icon gold"><i class="bi bi-shield-check"></i></div>
+          <h5>Safe & Hygienic</h5>
+          <p>Keep meal planning organised with clear reservations and records.</p>
+          <span>02</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="landing-feature-card">
+          <div class="landing-feature-icon blue"><i class="bi bi-clock-history"></i></div>
+          <h5>Real-time Updates</h5>
+          <p>See reservation status, upcoming meals and attendance information.</p>
+          <span>03</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="landing-feature-card">
+          <div class="landing-feature-icon green"><i class="bi bi-leaf"></i></div>
+          <h5>For a Better You</h5>
+          <p>Nutritious meal planning that supports better campus routines.</p>
+          <span>04</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-4">
+        <div class="section-heading text-start mb-0">
+          <span>HOW IT WORKS</span>
+          <h2>Simple Steps,<br><em>Healthy Meals</em></h2>
+          <p>From booking to enjoying, it's quick and easy. Follow these simple steps to reserve your meal.</p>
+          <a href="/register" class="btn how-btn">Get Started <span>→</span></a>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="steps-grid">
+          <div class="landing-step"><div class="step-number">1</div><div class="step-icon"><i class="bi bi-person-plus"></i></div><h6>Register / Login</h6><p>Create your account or log in.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="landing-step"><div class="step-number">2</div><div class="step-icon"><i class="bi bi-calendar-event"></i></div><h6>Book Meal</h6><p>Select date, meal and guests.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="landing-step"><div class="step-number">3</div><div class="step-icon"><i class="bi bi-check2-circle"></i></div><h6>Confirm</h6><p>Get instant confirmation.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="landing-step"><div class="step-number">4</div><div class="step-icon"><i class="bi bi-egg-fried"></i></div><h6>Enjoy</h6><p>Collect your meal at the canteen.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="landing-cta">
+  <div class="container">
+    <div class="landing-cta-card">
+      <div>
+        <span>READY WHEN YOU ARE</span>
+        <h2>Reserve today. Eat better tomorrow.</h2>
+        <p>Students can book meals, receive reminders and keep track of reservations from one simple dashboard.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="/register" class="btn landing-btn-primary">Student Registration →</a>
+        <a href="/admin/register" class="btn landing-btn-ghost">Admin Registration</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <%- include('partials/footer') %>
