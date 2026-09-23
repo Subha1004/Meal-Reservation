@@ -15,6 +15,6 @@ jobs:
           APP_URL: https://meal-reservation.vercel.app
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          curl --fail --show-error -v \
+         curl --fail --show-error -v \
             -H "Authorization: Bearer ${CRON_SECRET}" \
             "${APP_URL}/api/cron/meal-reminders"
