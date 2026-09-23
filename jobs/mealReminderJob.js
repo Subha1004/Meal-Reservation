@@ -118,11 +118,19 @@ async function claimReminder(studentId, session, dateKey) {
 async function sendUpcomingMealReminders() {
   try {
     if (!getTransporter()) {
-      return;
-    }
+  console.log('REMINDER DEBUG: Email transporter is NOT configured');
+  return;
+}
 
-    const windows = getActiveReminderWindows();
-    if (!windows.length) return;
+console.log('REMINDER DEBUG: Email transporter is configured');
+
+const windows = getActiveReminderWindows();
+console.log('REMINDER DEBUG: Active windows:', windows);
+
+if (!windows.length) {
+  console.log('REMINDER DEBUG: No active reminder window');
+  return;
+}
 
     const students = await User.find({
       role: 'student',
