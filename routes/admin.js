@@ -11,7 +11,32 @@ const { parseLocalDate, toLocalDateString, dayRange } = require('../utils/dates'
 router.get('/dashboard', ensureAdmin, async (req, res) => {
   try {
     const { start, end } = dayRange(parseLocalDate());
+        const chartStart = new Date(start);
+    chartStart.setDate(chartStart.getDate() - 6);
 
+    const chartReservations = await Reservation.find({
+      date: { $gte: chartStart, $lt: end },
+      status: { $in: ['confirmed', 'completed'] }
+    });
+
+    const reservationChart = [];
+
+    for (let i = 0; i < 7; i++) {
+      const chartDate = new Date(chartStart);
+      chartDate.setDate(chartStart.getDate() + i);
+
+      const nextDate = new Date(chartDate);
+      nextDate.setDate(chartDate.getDate() + 1);
+
+      const count = chartReservations.filter(
+        (r) => r.date >= chartDate && r.date < nextDate
+      ).length;
+
+      reservationChart.push({
+        date: toLocalDateString(chartDate),
+        count
+      });
+    }
     const todayReservations = await Reservation.find({
       date: { $gte: start, $lt: end },
       status: { $in: ['confirmed', 'completed'] }
@@ -38,6 +63,7 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
       totalMeals,
       pendingFeedback,
       mealTotals
+      reservationChart
     });
   } catch (error) {
     req.flash('error', error.message);
