@@ -62,7 +62,7 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
       totalStudents,
       totalMeals,
       pendingFeedback,
-      mealTotals
+      mealTotals,
       reservationChart
     });
   } catch (error) {
