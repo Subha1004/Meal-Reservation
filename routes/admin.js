@@ -63,7 +63,8 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
       totalMeals,
       pendingFeedback,
       mealTotals,
-      reservationChart
+      reservationChart,
+      attendanceRate
     });
   } catch (error) {
     req.flash('error', error.message);
