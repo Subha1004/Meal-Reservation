@@ -55,7 +55,17 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
       },
       { studentMeals: 0, guestMeals: 0, totalMeals: 0 }
     );
+ const todayAttendance = await Attendance.find({
+  date: { $gte: start, $lt: end }
+});
 
+const attendedCount = todayAttendance.filter(
+  (a) => a.attended
+).length;
+
+const attendanceRate = todayAttendance.length
+  ? Math.round((attendedCount / todayAttendance.length) * 100)
+  : 0;
     res.render('admin/dashboard', {
       title: 'Admin Dashboard',
       todayReservations,
