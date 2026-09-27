@@ -11,32 +11,7 @@ const { parseLocalDate, toLocalDateString, dayRange } = require('../utils/dates'
 router.get('/dashboard', ensureAdmin, async (req, res) => {
   try {
     const { start, end } = dayRange(parseLocalDate());
-        const chartStart = new Date(start);
-    chartStart.setDate(chartStart.getDate() - 6);
 
-    const chartReservations = await Reservation.find({
-      date: { $gte: chartStart, $lt: end },
-      status: { $in: ['confirmed', 'completed'] }
-    });
-
-    const reservationChart = [];
-
-    for (let i = 0; i < 7; i++) {
-      const chartDate = new Date(chartStart);
-      chartDate.setDate(chartStart.getDate() + i);
-
-      const nextDate = new Date(chartDate);
-      nextDate.setDate(chartDate.getDate() + 1);
-
-      const count = chartReservations.filter(
-        (r) => r.date >= chartDate && r.date < nextDate
-      ).length;
-
-      reservationChart.push({
-        date: toLocalDateString(chartDate),
-        count
-      });
-    }
     const todayReservations = await Reservation.find({
       date: { $gte: start, $lt: end },
       status: { $in: ['confirmed', 'completed'] }
@@ -55,17 +30,28 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
       },
       { studentMeals: 0, guestMeals: 0, totalMeals: 0 }
     );
- const todayAttendance = await Attendance.find({
-  date: { $gte: start, $lt: end }
-});
 
-const attendedCount = todayAttendance.filter(
-  (a) => a.attended
-).length;
+    const reservationChart = [];
+    for (let offset = 6; offset >= 0; offset -= 1) {
+      const chartDate = new Date(start);
+      chartDate.setDate(chartDate.getDate() - offset);
+      const { start: chartStart, end: chartEnd } = dayRange(chartDate);
+      const count = await Reservation.countDocuments({
+        date: { $gte: chartStart, $lt: chartEnd },
+        status: { $in: ['confirmed', 'completed'] }
+      });
+      reservationChart.push({
+        label: chartDate.toLocaleDateString('en-IN', { weekday: 'short' }),
+        date: toLocalDateString(chartDate),
+        count
+      });
+    }
 
-const attendanceRate = todayAttendance.length
-  ? Math.round((attendedCount / todayAttendance.length) * 100)
-  : 0;
+    const attendanceToday = await Attendance.find({ date: { $gte: start, $lt: end } });
+    const attendanceRate = attendanceToday.length
+      ? Math.round((attendanceToday.filter((a) => a.attended).length / attendanceToday.length) * 100)
+      : 0;
+
     res.render('admin/dashboard', {
       title: 'Admin Dashboard',
       todayReservations,
